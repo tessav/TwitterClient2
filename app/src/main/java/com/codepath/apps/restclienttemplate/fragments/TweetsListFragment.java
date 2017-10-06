@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 
@@ -34,6 +35,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
 
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
+        public void onProfileSelected(User user);
     }
 
     @Nullable
@@ -73,6 +75,12 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
+    }
+
+    @Override
+    public void onProfileSelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        ((TweetSelectedListener) getActivity()).onProfileSelected(tweet.user);
     }
 
     private void attachScrollListener() {

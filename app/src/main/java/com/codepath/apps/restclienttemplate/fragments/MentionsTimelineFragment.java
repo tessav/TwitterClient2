@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
-import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -22,7 +21,6 @@ import cz.msebera.android.httpclient.Header;
 public class MentionsTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
-    private EndlessRecyclerViewScrollListener scrollListener;
 
 
     @Override

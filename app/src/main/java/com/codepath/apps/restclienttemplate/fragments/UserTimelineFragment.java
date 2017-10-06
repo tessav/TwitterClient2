@@ -26,17 +26,17 @@ public class UserTimelineFragment extends TweetsListFragment {
         Bundle args = new Bundle();
         args.putString("screen_name", screenName);
         userTimelineFragment.setArguments(args);
+        userTimelineFragment.populateTimeline(PaginationParamType.SINCE, 1);
         return userTimelineFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = TwitterApp.getRestClient();
-        populateTimeline(PaginationParamType.SINCE, 1);
     }
 
     public void populateTimeline(PaginationParamType tweetIdType, long tweetId) {
+        client = TwitterApp.getRestClient();
         String screenName = getArguments().getString("screen_name");
         client.getUserTimeline(tweetIdType, tweetId, screenName, new JsonHttpResponseHandler() {
 
@@ -44,7 +44,6 @@ public class UserTimelineFragment extends TweetsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("TWITTERCLIENT", response.toString());
                 addItems(response);
-
             }
 
             @Override

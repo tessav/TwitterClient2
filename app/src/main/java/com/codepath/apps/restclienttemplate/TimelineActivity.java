@@ -22,6 +22,7 @@ import com.codepath.apps.restclienttemplate.utils.CircleTransform;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -55,6 +56,12 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
          Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onProfileSelected(User user) {
+        Toast.makeText(this, user.name, Toast.LENGTH_SHORT).show();
+        startProfileIntent(user);
+    }
+
     private void setupProfileImage() {
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         twitterClient.getUserInfo(new JsonHttpResponseHandler() {
@@ -68,7 +75,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
                             .centerCrop().crossFade()
                             .transform(new CircleTransform(context))
                             .into(ivProfileImage);
-                    setProfileOnClick();
+                    setProfileOnClick(user);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -82,13 +89,18 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         });
     }
 
-    private void setProfileOnClick() {
+    private void setProfileOnClick(final User user) {
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
-                startActivity(i);
+                startProfileIntent(user);
             }
         });
+    }
+
+    private void startProfileIntent(User user) {
+        Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
+        i.putExtra("user", Parcels.wrap(user));
+        startActivity(i);
     }
 
 }

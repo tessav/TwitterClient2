@@ -28,6 +28,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     public interface TweetAdapterListener {
         public void onItemSelected(View view, int position);
+        public void onProfileSelected(View view, int position);
     }
 
     public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
@@ -48,7 +49,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get data according to position
-        Tweet tweet = mTweets.get(position);
+        final Tweet tweet = mTweets.get(position);
         ParseRelativeDate dateParser = new ParseRelativeDate();
 
         // populate views according to this data
@@ -92,6 +93,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     if (mListener != null) {
                         int position = getAdapterPosition();
                         mListener.onItemSelected(v, position);
+                    }
+                }
+            });
+
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        mListener.onProfileSelected(v, position);
                     }
                 }
             });
