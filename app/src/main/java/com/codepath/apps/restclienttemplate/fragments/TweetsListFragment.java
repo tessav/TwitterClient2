@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +25,12 @@ import java.util.ArrayList;
  * Created by tessavoon on 10/4/17.
  */
 
-public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener {
+public abstract class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener {
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
     LinearLayoutManager linearLayoutManager;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
@@ -44,6 +47,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(tweetAdapter);
         addDividers();
+        attachScrollListener();
         return v;
     }
 
@@ -70,4 +74,17 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
     }
+
+    private void attachScrollListener() {
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Tweet maxTweet = tweets.get(totalItemsCount - 1);
+                populateTimeline(PaginationParamType.MAX, maxTweet.uid - 1);
+            }
+        };
+        rvTweets.addOnScrollListener(scrollListener);
+    }
+
+    protected abstract void populateTimeline(PaginationParamType tweetIdType, long tweetId);
 }

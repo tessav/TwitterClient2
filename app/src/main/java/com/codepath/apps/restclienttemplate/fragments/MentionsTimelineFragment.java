@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -20,22 +22,23 @@ import cz.msebera.android.httpclient.Header;
 public class MentionsTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
-        populateTimeline();
+        populateTimeline(PaginationParamType.SINCE, 1);
     }
 
-    private void populateTimeline() {
-        client.getMentionsTimeline(new JsonHttpResponseHandler() {
+    public void populateTimeline(PaginationParamType tweetIdType, long tweetId) {
+        client.getMentionsTimeline(tweetIdType, tweetId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("TWITTERCLIENT", response.toString());
                 addItems(response);
-
             }
 
             @Override
@@ -44,7 +47,5 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                 throwable.printStackTrace();
             }
         });
-
-
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -32,12 +33,12 @@ public class UserTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
-        populateTimeline();
+        populateTimeline(PaginationParamType.SINCE, 1);
     }
 
-    private void populateTimeline() {
+    public void populateTimeline(PaginationParamType tweetIdType, long tweetId) {
         String screenName = getArguments().getString("screen_name");
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+        client.getUserTimeline(tweetIdType, tweetId, screenName, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

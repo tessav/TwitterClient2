@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -19,16 +21,17 @@ import cz.msebera.android.httpclient.Header;
 
 public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
-        populateTimeline();
+        populateTimeline(PaginationParamType.SINCE, 1);
     }
 
-    private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+    public void populateTimeline(PaginationParamType tweetIdType, long tweetId) {
+        client.getHomeTimeline(tweetIdType, tweetId, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -43,7 +46,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 throwable.printStackTrace();
             }
         });
-
-
     }
+
 }

@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 
+import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
@@ -41,31 +42,31 @@ public class TwitterClient extends OAuthBaseClient {
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
 
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+	public void getHomeTimeline(PaginationParamType tweetIdType, long tweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
+		params.put(tweetIdType.param(), tweetId);
 		params.put("count", 25);
-		params.put("since_id", 1);
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+	public void getMentionsTimeline(PaginationParamType tweetIdType, long tweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/mentions_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
-		params.put("since_id", 1);
+		params.put(tweetIdType.param(), tweetId);
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(PaginationParamType tweetIdType, long tweetId, String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/user_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("screenName", screenName);
-		params.put("since_id", 1);
+		params.put(tweetIdType.param(), tweetId);
 		client.get(apiUrl, params, handler);
 	}
 

@@ -13,9 +13,11 @@ public class User {
     public long uid;
     public String screenName;
     public String profileImageUrl;
+    public String profileBannerUrl;
     public String tagline;
     public int followersCount;
     public int followingCount;
+    public boolean verified;
 
     public static User fromJSON(JSONObject jsonObject) throws JSONException {
         User user = new User();
