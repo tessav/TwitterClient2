@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
+    LinearLayoutManager linearLayoutManager;
 
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
@@ -38,9 +40,17 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(tweets, this);
         rvTweets = (RecyclerView) v.findViewById(R.id.rvTweet);
-        rvTweets.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(tweetAdapter);
+        addDividers();
         return v;
+    }
+
+    private void addDividers() {
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(),
+                linearLayoutManager.getOrientation());
+        rvTweets.addItemDecoration(dividerItemDecoration);
     }
 
     public void addItems(JSONArray response) {

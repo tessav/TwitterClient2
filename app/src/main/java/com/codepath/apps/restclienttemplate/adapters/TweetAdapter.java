@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.utils.CircleTransform;
+import com.codepath.apps.restclienttemplate.utils.ParseRelativeDate;
 
 import java.util.List;
 
@@ -47,12 +49,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get data according to position
         Tweet tweet = mTweets.get(position);
+        ParseRelativeDate dateParser = new ParseRelativeDate();
 
         // populate views according to this data
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
+        holder.tvScreenName.setText("@" + tweet.user.screenName);
+        holder.tvTimeStamp.setText("\u2022 " + dateParser.getRelativeTimeAgo(tweet.createdAt));
 
-        Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        Glide.with(context)
+                .load(tweet.user.profileImageUrl)
+                .centerCrop().crossFade()
+                .transform(new CircleTransform(context))
+                .into(holder.ivProfileImage);
     }
 
     @Override
@@ -66,12 +75,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         ImageView ivProfileImage;
         TextView tvUserName;
         TextView tvBody;
+        TextView tvScreenName;
+        TextView tvTimeStamp;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
+            tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

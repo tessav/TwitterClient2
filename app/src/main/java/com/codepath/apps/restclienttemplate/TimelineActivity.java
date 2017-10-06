@@ -20,6 +20,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        setupToolbar();
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -35,6 +36,14 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     public void onProfileView(MenuItem item) {
         Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
+    }
+
+    private void setupToolbar() {
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setElevation(10);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        getSupportActionBar().setDisplayShowCustomEnabled(true);
     }
 
     @Override
