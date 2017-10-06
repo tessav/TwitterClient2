@@ -70,7 +70,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         return mTweets.size();
     }
 
-    // create ViewHolder class
+    public void clear() {
+        mTweets.clear();
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProfileImage;

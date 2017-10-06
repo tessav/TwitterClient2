@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
+    SwipeRefreshLayout swipeContainer;
     LinearLayoutManager linearLayoutManager;
     private EndlessRecyclerViewScrollListener scrollListener;
 
@@ -45,11 +47,13 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(tweets, this);
         rvTweets = (RecyclerView) v.findViewById(R.id.rvTweet);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         linearLayoutManager = new LinearLayoutManager(getContext());
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(tweetAdapter);
         addDividers();
         attachScrollListener();
+        attachPullToRefreshListener();
         return v;
     }
 
@@ -92,6 +96,18 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
+    }
+
+    private void attachPullToRefreshListener() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                tweetAdapter.clear();
+                populateTimeline(PaginationParamType.SINCE, 1);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
     }
 
     protected abstract void populateTimeline(PaginationParamType tweetIdType, long tweetId);
