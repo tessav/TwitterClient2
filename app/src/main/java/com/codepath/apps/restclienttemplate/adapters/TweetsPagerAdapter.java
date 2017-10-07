@@ -3,16 +3,16 @@ package com.codepath.apps.restclienttemplate.adapters;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.MentionsTimelineFragment;
+import com.codepath.apps.restclienttemplate.utils.SmartFragmentStatePagerAdapter;
 
 /**
  * Created by tessavoon on 10/4/17.
  */
 
-public class TweetsPagerAdapter extends FragmentPagerAdapter {
+public class TweetsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     private String tabTitles[] = new String[] {"Home", "Mentions"};
     private static final int NUM_FRAGMENTS = 2;
@@ -31,7 +31,7 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new HomeTimelineFragment();
+            return HomeTimelineFragment.newInstance();
         } else if (position == 1) {
             return new MentionsTimelineFragment();
         } else {

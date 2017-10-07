@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 
+import com.codepath.apps.restclienttemplate.models.TweetDraft;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
@@ -77,6 +78,16 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("count", 25);
 		params.put("since_id", 1);
 		client.get(apiUrl, params, handler);
+	}
+
+	public void postTweet(TweetDraft draft, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", draft.postBody);
+		if (draft.isReply) {
+			params.put("in_reply_to_status_id", draft.statusId);
+		}
+		client.post(apiUrl, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

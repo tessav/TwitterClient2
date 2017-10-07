@@ -3,7 +3,11 @@ package com.codepath.apps.restclienttemplate.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,34 +20,44 @@ import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.adapters.TweetsPagerAdapter;
+import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
+import com.codepath.apps.restclienttemplate.utils.SmartFragmentStatePagerAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
 
     TwitterClient twitterClient;
     Context context;
-    ImageView ivProfileImage;
+    TweetsPagerAdapter tweetsPagerAdapter;
+    @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+    @BindView(R.id.viewpager) ViewPager vpPager;
+    @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+    @BindView(R.id.fabCompose) FloatingActionButton fabCompose;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        ButterKnife.bind(this);
+        tweetsPagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+        vpPager.setAdapter(tweetsPagerAdapter);
         tabLayout.setupWithViewPager(vpPager);
         twitterClient = TwitterApp.getRestClient();
         context = getApplicationContext();
         setupProfileImage();
+        attachFABListener();
     }
 
     @Override
@@ -65,7 +79,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     }
 
     private void setupProfileImage() {
-        ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         twitterClient.getUserInfo(new JsonHttpResponseHandler() {
 
             @Override
@@ -103,6 +116,35 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         Intent i = new Intent(TimelineActivity.this, ProfileActivity.class);
         i.putExtra("user", Parcels.wrap(user));
         startActivity(i);
+    }
+
+    private void attachFABListener() {
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                composeTweet();
+            }
+        });
+    }
+
+    private void composeTweet() {
+        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+        i.putExtra("isReply", false);
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
+            insertTweet(tweet);
+            Snackbar.make(vpPager, R.string.finish_compose, Snackbar.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+    private void insertTweet(Tweet tweet) {
+        HomeTimelineFragment htfragment = (HomeTimelineFragment) tweetsPagerAdapter.getRegisteredFragment(0);
+        htfragment.insertTweetAtTop(tweet);
     }
 
 }

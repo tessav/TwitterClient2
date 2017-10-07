@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -20,6 +21,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
+
+    public HomeTimelineFragment() {
+    }
+
+    public static HomeTimelineFragment newInstance() {
+        HomeTimelineFragment fragment = new HomeTimelineFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +54,12 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 throwable.printStackTrace();
             }
         });
+    }
+
+    public void insertTweetAtTop(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetAdapter.notifyItemInserted(0);
+        linearLayoutManager.scrollToPositionWithOffset(0, 0);
     }
 
 }
