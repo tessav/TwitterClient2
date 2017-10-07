@@ -39,6 +39,9 @@ public final class ParseRelativeDate {
     }
 
     private String prettifyTimeStamp(String relativeDate) {
+        if (relativeDate.equals("Yesterday")) {
+            return "1d";
+        }
         String relativeDateDigits = relativeDate.replaceAll("\\D+","");
         for (int i = 0; i < TIME_FRAMES.length; i++) {
             if (isMatchTimeFrame(TIME_FRAMES[i], relativeDate)) {

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -10,13 +11,15 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.databinding.ActivityProfileBinding;
+import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.fragments.UserTimelineFragment;
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
 
 import org.parceler.Parcels;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
 
     private ActivityProfileBinding binding;
     Context context;
@@ -37,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void populateUserHeadline(User user) {
+        binding.toolbarTitle.setText(user.name);
         binding.tvName.setText(user.name);
         binding.tvTagline.setText(user.tagline);
         binding.tvFollowers.setText(user.followersCount + " Followers");
@@ -61,4 +65,15 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onTweetSelected(Tweet tweet) {
+        Intent i = new Intent(ProfileActivity.this, DetailActivity.class);
+        i.putExtra("tweet", Parcels.wrap(tweet));
+        startActivity(i);
+    }
+
+    @Override
+    public void onProfileSelected(User user) {
+       // stays in same profile
+    }
 }

@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.restclienttemplate.activities.ProfileActivity;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApp;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.adapters.TweetsPagerAdapter;
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -53,12 +54,13 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
     @Override
     public void onTweetSelected(Tweet tweet) {
-         Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(TimelineActivity.this, DetailActivity.class);
+        i.putExtra("tweet", Parcels.wrap(tweet));
+        startActivity(i);
     }
 
     @Override
     public void onProfileSelected(User user) {
-        Toast.makeText(this, user.name, Toast.LENGTH_SHORT).show();
         startProfileIntent(user);
     }
 

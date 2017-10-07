@@ -7,7 +7,7 @@
     android:background="#fff"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.codepath.apps.restclienttemplate.TimelineActivity">
+    tools:context="com.codepath.apps.restclienttemplate.activities.TimelineActivity">
 
 
     <android.support.design.widget.AppBarLayout
