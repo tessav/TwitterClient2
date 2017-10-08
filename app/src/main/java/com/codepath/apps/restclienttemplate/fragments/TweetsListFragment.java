@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -16,6 +17,7 @@ import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.utils.NetworkUtils;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 
 import org.json.JSONArray;
@@ -92,7 +94,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Tweet maxTweet = tweets.get(totalItemsCount - 1);
-                populateTimeline(PaginationParamType.MAX, maxTweet.uid - 1);
+                checkAndPopulate(PaginationParamType.MAX, maxTweet.uid - 1);
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
@@ -103,11 +105,20 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
             @Override
             public void onRefresh() {
                 tweetAdapter.clear();
-                populateTimeline(PaginationParamType.SINCE, 1);
+                checkAndPopulate(PaginationParamType.SINCE, 1);
                 swipeContainer.setRefreshing(false);
             }
         });
 
+    }
+
+    private void checkAndPopulate(PaginationParamType tweetIdType, long tweetId) {
+        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+            populateTimeline(tweetIdType, tweetId);
+        } else {
+            Snackbar.make(rvTweets, R.string.not_connected, Snackbar.LENGTH_LONG)
+                    .show();
+        }
     }
 
     protected abstract void populateTimeline(PaginationParamType tweetIdType, long tweetId);

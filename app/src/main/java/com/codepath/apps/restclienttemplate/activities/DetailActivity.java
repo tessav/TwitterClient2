@@ -2,11 +2,14 @@ package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,6 +22,7 @@ import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
 import com.codepath.apps.restclienttemplate.utils.ParseRelativeDate;
+import com.codepath.apps.restclienttemplate.utils.RoundedCornersTransformation;
 
 import org.parceler.Parcels;
 
@@ -74,30 +78,30 @@ public class DetailActivity extends AppCompatActivity {
                 .centerCrop().crossFade()
                 .transform(new CircleTransform(context))
                 .into(ivProfileImage);
-//        if (tweet.mediaType == Tweet.MediaType.IMAGE) {
-//            Glide.with(context)
-//                    .load(tweet.mediaUrl)
-//                    .crossFade()
-//                    .transform(new RoundedCornersTransformation(context, 25, 0))
-//                    .into(ivPostImage);
-//        } else if (tweet.mediaType == Tweet.MediaType.VIDEO) {
-//            ivPostImage.setVisibility(View.INVISIBLE);
-//            scrollView.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    return false;
-//                }
-//            });
-//            vvPostVideo.setVisibility(View.VISIBLE);
-//            Uri uri = Uri.parse(tweet.mediaUrl);
-//            vvPostVideo.setVideoURI(uri);
-//            vvPostVideo.setZOrderOnTop(true);
-//            vvPostVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                public void onPrepared(MediaPlayer mp) {
-//                    vvPostVideo.start();
-//                }
-//            });
-//        }
+        if (tweet.mediaType == Tweet.MediaType.IMAGE) {
+            Glide.with(context)
+                    .load(tweet.mediaUrl)
+                    .crossFade()
+                    .transform(new RoundedCornersTransformation(context, 25, 0))
+                    .into(ivPostImage);
+        } else if (tweet.mediaType == Tweet.MediaType.VIDEO) {
+            ivPostImage.setVisibility(View.INVISIBLE);
+            scrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            vvPostVideo.setVisibility(View.VISIBLE);
+            Uri uri = Uri.parse(tweet.mediaUrl);
+            vvPostVideo.setVideoURI(uri);
+            vvPostVideo.setZOrderOnTop(true);
+            vvPostVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    vvPostVideo.start();
+                }
+            });
+        }
     }
 
     private void enableBackButton() {

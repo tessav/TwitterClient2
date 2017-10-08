@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,7 +23,6 @@ import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
-import com.codepath.apps.restclienttemplate.utils.SmartFragmentStatePagerAdapter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
@@ -99,7 +96,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("TWITTERCLIENT", errorResponse.toString());
-                throwable.printStackTrace();
+               // throwable.printStackTrace();
             }
         });
     }
@@ -145,6 +142,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     private void insertTweet(Tweet tweet) {
         HomeTimelineFragment htfragment = (HomeTimelineFragment) tweetsPagerAdapter.getRegisteredFragment(0);
         htfragment.insertTweetAtTop(tweet);
+        vpPager.setCurrentItem(0);
     }
 
 }

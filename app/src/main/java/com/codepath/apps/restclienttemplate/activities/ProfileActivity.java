@@ -37,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
         ft.commit();
         setupToolbar();
         populateUserHeadline(user);
+        setupFollowListeners();
     }
 
     public void populateUserHeadline(User user) {
@@ -76,4 +77,21 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
     public void onProfileSelected(User user) {
        // stays in same profile
     }
+
+    private void setupFollowListeners() {
+        binding.tvFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        binding.tvFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
 }
