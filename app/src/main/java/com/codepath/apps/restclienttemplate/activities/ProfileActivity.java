@@ -82,16 +82,23 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
         binding.tvFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                followIntent("follower");
             }
         });
 
         binding.tvFollowing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                followIntent("following");
             }
         });
+    }
+
+    private void followIntent(String followType) {
+        Intent i = new Intent(ProfileActivity.this, FollowActivity.class);
+        i.putExtra("user", Parcels.wrap(user));
+        i.putExtra("follow_type", followType);
+        startActivity(i);
     }
 
 }

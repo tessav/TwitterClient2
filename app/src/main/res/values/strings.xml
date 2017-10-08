@@ -8,4 +8,7 @@
     <string name="finish_compose">Your Tweet was posted!</string>
     <string name="save_draft">Save Tweet?</string>
     <string name="not_connected">No network connection available.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
