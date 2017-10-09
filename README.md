@@ -41,10 +41,11 @@ The following **bonus** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-
-<img src='https://i.imgur.com/YFa2BfS.gif' title='Video Walkthrough 1' width='' alt='Video Walkthrough' />
-<img src='https://i.imgur.com/RIdmO3C.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough' />
-<img src='https://i.imgur.com/jPonjjr.gif' title='Video Walkthrough 3' width='' alt='Video Walkthrough' />
+<a href='https://i.imgur.com/YFa2BfS.gif'>Video Walkthrough 1</a><br />
+<img src='https://i.imgur.com/YFa2BfS.gif' title='Video Walkthrough 1' width='' alt='Video Walkthrough' /><br />
+<a href='https://i.imgur.com/RIdmO3C.gif'>Video Walkthrough 1</a><br />
+<img src='https://i.imgur.com/RIdmO3C.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough' /><br />
+<a href='https://i.imgur.com/jPonjjr.gif'>Video Walkthrough 3</a>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
