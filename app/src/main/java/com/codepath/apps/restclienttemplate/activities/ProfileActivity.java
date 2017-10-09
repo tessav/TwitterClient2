@@ -24,6 +24,7 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
     private ActivityProfileBinding binding;
     Context context;
     User user;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,11 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
        // stays in same profile
     }
 
+    @Override
+    public void onReplySelected(Tweet tweet) {
+        replyToTweet(tweet);
+    }
+
     private void setupFollowListeners() {
         binding.tvFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +105,14 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
         i.putExtra("user", Parcels.wrap(user));
         i.putExtra("follow_type", followType);
         startActivity(i);
+    }
+
+    private void replyToTweet(Tweet tweet) {
+        Intent i = new Intent(ProfileActivity.this, ComposeActivity.class);
+        i.putExtra("isReply", true);
+        i.putExtra("screenName", tweet.user.screenName);
+        i.putExtra("statusId", tweet.uid);
+        startActivityForResult(i, REQUEST_CODE);
     }
 
 }

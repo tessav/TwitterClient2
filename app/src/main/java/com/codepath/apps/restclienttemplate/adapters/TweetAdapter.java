@@ -32,6 +32,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public void onProfileSelected(View view, int position);
         public void onFavoriteSelected(View view, int position);
         public void onRetweetSelected(View view, int position);
+        public void onReplySelected(View view, int position);
     }
 
     public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
@@ -98,6 +99,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         ImageView ivProfileImage;
         ImageView ivRetweet;
         ImageView ivFavorite;
+        ImageView ivReply;
         TextView tvUserName;
         TextView tvBody;
         TextView tvScreenName;
@@ -110,6 +112,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
             ivFavorite = (ImageView) itemView.findViewById(R.id.ivLike);
+            ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
@@ -133,6 +136,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     if (mListener != null) {
                         int position = getAdapterPosition();
                         mListener.onProfileSelected(v, position);
+                    }
+                }
+            });
+
+            ivReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        mListener.onReplySelected(v, position);
                     }
                 }
             });

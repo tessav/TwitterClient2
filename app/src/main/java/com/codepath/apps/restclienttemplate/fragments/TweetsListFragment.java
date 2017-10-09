@@ -48,6 +48,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
         public void onProfileSelected(User user);
+        public void onReplySelected(Tweet tweet);
     }
 
     @Nullable
@@ -96,6 +97,12 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public void onProfileSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onProfileSelected(tweet.user);
+    }
+
+    @Override
+    public void onReplySelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        ((TweetSelectedListener) getActivity()).onReplySelected(tweet);
     }
 
     @Override
