@@ -8,22 +8,29 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApp;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.adapters.TweetAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.utils.NetworkUtils;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by tessavoon on 10/4/17.
@@ -35,11 +42,14 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     RecyclerView rvTweets;
     SwipeRefreshLayout swipeContainer;
     LinearLayoutManager linearLayoutManager;
+    TwitterClient client;
     private EndlessRecyclerViewScrollListener scrollListener;
 
     public interface TweetSelectedListener {
         public void onTweetSelected(Tweet tweet);
         public void onProfileSelected(User user);
+        public void onReplySelected(Tweet tweet);
+        public void onScreenNameSelected(String text);
     }
 
     @Nullable
@@ -53,6 +63,7 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
         linearLayoutManager = new LinearLayoutManager(getContext());
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(tweetAdapter);
+        client = TwitterApp.getRestClient();
         addDividers();
         attachScrollListener();
         attachPullToRefreshListener();
@@ -87,6 +98,101 @@ public abstract class TweetsListFragment extends Fragment implements TweetAdapte
     public void onProfileSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener) getActivity()).onProfileSelected(tweet.user);
+    }
+
+    @Override
+    public void onReplySelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        ((TweetSelectedListener) getActivity()).onReplySelected(tweet);
+    }
+
+    @Override
+    public void onScreenNameSelected(String text) {
+        ((TweetSelectedListener) getActivity()).onScreenNameSelected(text);
+    }
+
+    @Override
+    public void onFavoriteSelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        if (tweet.isFavorite) {
+            unfavorite(tweet);
+        } else {
+            favorite(tweet);
+        }
+    }
+
+    @Override
+    public void onRetweetSelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        if (tweet.isRetweet) {
+            unretweet(tweet);
+        } else {
+            retweet(tweet);
+        }
+    }
+
+    private void favorite(Tweet tweet) {
+        client.favoriteTweet(tweet, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("twitterclient", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTERCLIENT", errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    private void unfavorite(Tweet tweet) {
+        client.unfavoriteTweet(tweet, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("twitterclient", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTERCLIENT", errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    private void retweet(Tweet tweet) {
+        client.retweet(tweet, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("twitterclient", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTERCLIENT", errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    private void unretweet(Tweet tweet) {
+        client.unretweet(tweet, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("twitterclient", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTERCLIENT", errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
     }
 
     private void attachScrollListener() {

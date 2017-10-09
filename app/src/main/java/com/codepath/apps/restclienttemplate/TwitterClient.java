@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDraft;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.codepath.oauth.OAuthBaseClient;
@@ -45,7 +46,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getHomeTimeline(PaginationParamType tweetIdType, long tweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put(tweetIdType.param(), tweetId);
 		params.put("count", 25);
@@ -54,7 +54,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getMentionsTimeline(PaginationParamType tweetIdType, long tweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/mentions_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put(tweetIdType.param(), tweetId);
@@ -63,7 +62,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getUserTimeline(PaginationParamType tweetIdType, long tweetId, String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/statuses/user_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("screen_name", screenName);
@@ -73,7 +71,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getUserInfo(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("/account/verify_credentials.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("since_id", 1);
@@ -88,6 +85,53 @@ public class TwitterClient extends OAuthBaseClient {
 			params.put("in_reply_to_status_id", draft.statusId);
 		}
 		client.post(apiUrl, params, handler);
+	}
+
+	public void getFollowers(String screenName, long nextCursor, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/followers/list.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		params.put("next_cursor", nextCursor);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getFriends(String screenName, long nextCursor, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/friends/list.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		params.put("cursor", nextCursor);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void favoriteTweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweet.uid);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void unfavoriteTweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweet.uid);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void retweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/retweet/" + tweet.uid + ".json");
+		client.post(apiUrl, handler);
+	}
+
+	public void unretweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/unretweet/" + tweet.uid + ".json");
+		client.post(apiUrl, handler);
+	}
+
+	public void lookupUser(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/users/lookup.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

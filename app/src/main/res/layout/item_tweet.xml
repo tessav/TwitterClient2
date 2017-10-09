@@ -61,4 +61,72 @@
         android:text="TextView"
         android:textColor="@color/twitterBlack"
         android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_alignStart="@+id/tvUserName"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@color/white" />
+
+    <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignStart="@+id/tvBody"
+        android:layout_below="@+id/ivPostImage"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitXY"
+        android:tint="@color/twitterGrey"
+        app:srcCompat="@drawable/ic_reply" />
+
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivPostImage"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/ivReply"
+        android:scaleType="fitXY"
+        android:tint="@color/twitterGrey"
+        app:srcCompat="@drawable/ic_retweet" />
+
+    <TextView
+        android:id="@+id/tvRetweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPostImage"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ivRetweet"
+        android:text="0" />
+
+    <ImageView
+        android:id="@+id/ivLike"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/ivPostImage"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/tvRetweet"
+        android:scaleType="fitXY"
+        android:tint="@color/twitterGrey"
+        app:srcCompat="@drawable/ic_favorite" />
+
+    <TextView
+        android:id="@+id/tvLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPostImage"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ivLike"
+        android:text="0" />
+
 </RelativeLayout>

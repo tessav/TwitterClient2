@@ -18,6 +18,10 @@ public class Tweet {
     public String createdAt;
     public String mediaUrl;
     public MediaType mediaType;
+    public int retweetCount;
+    public int favoriteCount;
+    public boolean isRetweet;
+    public boolean isFavorite;
 
     public enum MediaType {
         IMAGE,
@@ -32,6 +36,10 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
+        tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        tweet.isRetweet = jsonObject.getBoolean("retweeted");
+        tweet.isFavorite = jsonObject.getBoolean("favorited");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         String videoUrl = getVideoUrl(jsonObject);
         String imageUrl = getImageUrl(jsonObject);
