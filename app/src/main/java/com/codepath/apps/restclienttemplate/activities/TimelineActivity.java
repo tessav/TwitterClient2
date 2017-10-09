@@ -75,6 +75,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         startProfileIntent(user);
     }
 
+
     private void setupProfileImage() {
         twitterClient.getUserInfo(new JsonHttpResponseHandler() {
 

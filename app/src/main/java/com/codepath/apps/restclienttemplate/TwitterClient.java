@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDraft;
 import com.codepath.apps.restclienttemplate.utils.PaginationParamType;
 import com.codepath.oauth.OAuthBaseClient;
@@ -100,6 +101,30 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("screen_name", screenName);
 		params.put("cursor", nextCursor);
 		client.get(apiUrl, params, handler);
+	}
+
+	public void favoriteTweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweet.uid);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void unfavoriteTweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweet.uid);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void retweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/retweet/" + tweet.uid + ".json");
+		client.post(apiUrl, handler);
+	}
+
+	public void unretweet(Tweet tweet, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/unretweet/" + tweet.uid + ".json");
+		client.post(apiUrl, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
