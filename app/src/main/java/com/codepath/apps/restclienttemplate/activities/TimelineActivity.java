@@ -25,6 +25,7 @@ import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
@@ -70,6 +71,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         startActivity(i);
     }
 
+
     @Override
     public void onProfileSelected(User user) {
         startProfileIntent(user);
@@ -78,6 +80,38 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     @Override
     public void onReplySelected(Tweet tweet) {
         replyToTweet(tweet);
+    }
+
+    @Override
+    public void onScreenNameSelected(String text) {
+        Log.d("screeName", text);
+        twitterClient.lookupUser(text, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    User user = User.fromJSON(response.getJSONObject(0));
+                    startProfileIntent(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTERCLIENT", errorResponse.toString());
+                // throwable.printStackTrace();
+            }
+        });
     }
 
     private void setupProfileImage() {

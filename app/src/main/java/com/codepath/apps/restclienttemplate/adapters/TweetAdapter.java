@@ -14,8 +14,11 @@ import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.utils.CircleTransform;
 import com.codepath.apps.restclienttemplate.utils.ParseRelativeDate;
+import com.codepath.apps.restclienttemplate.utils.PatternEditableBuilder;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
 
 /**
  * Created by tessavoon on 9/27/17.
@@ -33,6 +36,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public void onFavoriteSelected(View view, int position);
         public void onRetweetSelected(View view, int position);
         public void onReplySelected(View view, int position);
+        public void onScreenNameSelected(String text);
     }
 
     public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
@@ -59,6 +63,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         // populate views according to this data
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
+        createClickableSpan(holder, "\\@(\\w+)");
+        createClickableSpan(holder, "\\#(\\w+)");
         holder.tvScreenName.setText("@" + tweet.user.screenName);
         holder.tvTimeStamp.setText("\u2022 " + dateParser.getRelativeTimeAgo(tweet.createdAt));
         holder.tvRetweet.setText(String.valueOf(tweet.retweetCount));
@@ -83,6 +89,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .centerCrop().crossFade()
                 .transform(new CircleTransform(context))
                 .into(holder.ivProfileImage);
+
+//
+//        if (tweet.mediaType == Tweet.MediaType.IMAGE) {
+//            Glide.with(context)
+//                    .load(tweet.mediaUrl)
+//                    .crossFade()
+//                    .transform(new RoundedCornersTransformation(context, 25, 0))
+//                    .into(holder.ivPostImage);
+//        } else {
+//            holder.ivPostImage.setVisibility(View.GONE);
+//        }
     }
 
     @Override
@@ -95,11 +112,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    private void createClickableSpan(ViewHolder holder, String pattern) {
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile(pattern), ContextCompat.getColor(context, R.color.twitterAccent),
+                        new PatternEditableBuilder.SpannableClickedListener() {
+                            @Override
+                            public void onSpanClicked(String text) {
+                                if (text.contains("@")) {
+                                    mListener.onScreenNameSelected(text.substring(1, text.length()));
+                                }
+                            }
+                        }).into(holder.tvBody);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProfileImage;
         ImageView ivRetweet;
         ImageView ivFavorite;
         ImageView ivReply;
+        ImageView ivPostImage;
         TextView tvUserName;
         TextView tvBody;
         TextView tvScreenName;
@@ -113,6 +144,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
             ivFavorite = (ImageView) itemView.findViewById(R.id.ivLike);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
+            ivPostImage = (ImageView) itemView.findViewById(R.id.ivPostImage);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);

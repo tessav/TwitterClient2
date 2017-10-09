@@ -80,6 +80,10 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
     }
 
     @Override
+    public void onScreenNameSelected(String text) {
+    }
+
+    @Override
     public void onReplySelected(Tweet tweet) {
         replyToTweet(tweet);
     }
