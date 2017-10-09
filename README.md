@@ -40,12 +40,12 @@ The following **bonus** features are implemented:
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
-<a href='https://i.imgur.com/YFa2BfS.gif'>Video Walkthrough 1</a><br />
-<img src='https://i.imgur.com/YFa2BfS.gif' title='Video Walkthrough 1' width='' alt='Video Walkthrough' /><br />
-<a href='https://i.imgur.com/RIdmO3C.gif'>Video Walkthrough 1</a><br />
-<img src='https://i.imgur.com/RIdmO3C.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough' /><br />
-<a href='https://i.imgur.com/jPonjjr.gif'>Video Walkthrough 3</a>
+Here's a walkthrough of implemented user stories:<br/><br>
+<a href='https://i.imgur.com/YFa2BfS.gif'>Video Walkthrough 1</a><br /><br>
+<img src='https://i.imgur.com/YFa2BfS.gif' title='Video Walkthrough 1' width='' alt='Video Walkthrough' /><br /><br /><br>
+<a href='https://i.imgur.com/RIdmO3C.gif'>Video Walkthrough 2</a><br /><br />
+<img src='https://i.imgur.com/RIdmO3C.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough' /><br /><br><br>
+<a href='https://i.imgur.com/jPonjjr.gif'>Video Walkthrough 3</a><br /><br>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
